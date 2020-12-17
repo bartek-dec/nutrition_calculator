@@ -12,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -97,7 +98,9 @@ class MealServiceImplTest {
         //given
         Meal meal1 = new Meal();
         Meal meal2 = new Meal();
-        List<Meal> meals = List.of(meal1, meal2);
+        List<Meal> meals = new ArrayList<>();
+        meals.add(meal1);
+        meals.add(meal2);
 
         when(mealRepository.findAll()).thenReturn(meals);
 
@@ -169,8 +172,11 @@ class MealServiceImplTest {
         ingredient.setFat(55);
         ingredient.setCarbs(55);
 
+        List<Ingredient> ingredients = new ArrayList<>();
+        ingredients.add(ingredient);
+
         Meal foundMeal = new Meal();
-        foundMeal.setIngredients(List.of(ingredient));
+        foundMeal.setIngredients(ingredients);
 
         Meal meal = new Meal();
         meal.setId(1L);
@@ -202,7 +208,8 @@ class MealServiceImplTest {
         //given
         LocalDate from = LocalDate.of(2020, 12, 10);
         LocalDate to = LocalDate.of(2020, 12, 14);
-        List<Meal> meals = List.of(new Meal());
+        List<Meal> meals = new ArrayList<>();
+        meals.add(new Meal());
 
         when(mealRepository.findAllInRange(any(LocalDate.class), any(LocalDate.class))).thenReturn(meals);
 
