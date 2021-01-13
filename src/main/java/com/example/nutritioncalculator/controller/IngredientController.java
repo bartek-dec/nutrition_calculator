@@ -155,7 +155,7 @@ public class IngredientController {
             return "redirect:/edit/meal/" + userRequest.getMealDbId();
         } catch (NumberFormatException e) {
             model.addAttribute("error", "Weight must be an integer greater than zero");
-            return "editIngredient";
+            return "editIngredientDB";
         }
     }
 
