@@ -6,6 +6,7 @@ import com.example.nutritioncalculator.dto.UserRequest;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public interface MealService {
 
@@ -23,7 +24,7 @@ public interface MealService {
 
     Meal findById(Long id);
 
-    Meal update(Meal meal);
+    Optional<Meal> update(Meal meal);
 
     void updateIngredient(UserRequest userRequest);
 

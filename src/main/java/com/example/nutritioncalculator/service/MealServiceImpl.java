@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * MealServiceImpl communicates with persistence layer.
@@ -130,18 +131,26 @@ public class MealServiceImpl implements MealService {
      * @param meal Request object from Http protocol.
      */
     @Override
-    public Meal update(Meal meal) {
-        Meal foundMeal = mealRepository.findById(meal.getId()).get();
-        List<Ingredient> foundIngredients = foundMeal.getIngredients();
+    public Optional<Meal> update(Meal meal) {
+        Optional<Meal> mealOptional = mealRepository.findById(meal.getId());
 
-        foundMeal.setName(meal.getName());
-        foundMeal.setDate(meal.getDate());
-        foundMeal.setTotalEnergy(getTotalEnergy(foundIngredients));
-        foundMeal.setTotalProtein(getTotalProtein(foundIngredients));
-        foundMeal.setTotalFat(getTotalFat(foundIngredients));
-        foundMeal.setTotalCarbs(getTotalCarbs(foundIngredients));
+        if (mealOptional.isPresent()) {
+            Meal foundMeal = mealOptional.get();
 
-        return mealRepository.save(foundMeal);
+            List<Ingredient> foundIngredients = foundMeal.getIngredients();
+
+            foundMeal.setName(meal.getName());
+            foundMeal.setDate(meal.getDate());
+            foundMeal.setTotalEnergy(getTotalEnergy(foundIngredients));
+            foundMeal.setTotalProtein(getTotalProtein(foundIngredients));
+            foundMeal.setTotalFat(getTotalFat(foundIngredients));
+            foundMeal.setTotalCarbs(getTotalCarbs(foundIngredients));
+
+            Meal updatedMeal = mealRepository.save(foundMeal);
+
+            return Optional.of(updatedMeal);
+        }
+        return Optional.empty();
     }
 
     /**
