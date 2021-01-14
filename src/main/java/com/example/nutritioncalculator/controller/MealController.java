@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -148,8 +149,15 @@ public class MealController {
                                  @RequestParam(value = "to") String to,
                                  Model model) {
 
-        model.addAttribute("meals", mealService.findByDate(dateParser.convertDate(from),
-                dateParser.convertDate(to)));
+        Optional<LocalDate> optionalFrom = dateParser.convertDate(from);
+        Optional<LocalDate> optionalTo = dateParser.convertDate(to);
+
+        if (optionalFrom.isPresent() && optionalTo.isPresent()) {
+            model.addAttribute("meals", mealService.findByDate(optionalFrom.get(), optionalTo.get()));
+        } else {
+            model.addAttribute("notFoundInRange", "");
+        }
+
         return "meals";
     }
 }
