@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Controller enables to manage ingredients.
@@ -151,8 +152,14 @@ public class IngredientController {
                 return "editIngredientDB";
             }
 
-            ingredientService.update(userRequest);
-            return "redirect:/edit/meal/" + userRequest.getMealDbId();
+            Optional<Ingredient> optionalIngredient = ingredientService.update(userRequest);
+
+            if (optionalIngredient.isPresent()) {
+                Ingredient updatedIngredient=optionalIngredient.get();
+                return "redirect:/edit/meal/" + updatedIngredient.getMeal().getId();
+            }
+
+            return "resourceNotExist";
         } catch (NumberFormatException e) {
             model.addAttribute("error", "Weight must be an integer greater than zero");
             return "editIngredientDB";
