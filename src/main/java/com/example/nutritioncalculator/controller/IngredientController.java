@@ -99,8 +99,13 @@ public class IngredientController {
                 return "editIngredient";
             }
 
-            mealService.updateIngredient(userRequest);
-            return "redirect:/meal";
+            Optional<Ingredient> optionalIngredient = mealService.updateIngredient(userRequest);
+
+            if (optionalIngredient.isPresent()) {
+                return "redirect:/meal";
+            }
+
+            return "resourceNotExist";
         } catch (NumberFormatException e) {
             model.addAttribute("error", "Weight must be an integer greater than zero");
             return "editIngredient";
@@ -155,7 +160,7 @@ public class IngredientController {
             Optional<Ingredient> optionalIngredient = ingredientService.update(userRequest);
 
             if (optionalIngredient.isPresent()) {
-                Ingredient updatedIngredient=optionalIngredient.get();
+                Ingredient updatedIngredient = optionalIngredient.get();
                 return "redirect:/edit/meal/" + updatedIngredient.getMeal().getId();
             }
 
