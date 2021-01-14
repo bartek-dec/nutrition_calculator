@@ -55,7 +55,7 @@
                             </div>
                             <div class="form-group">
                                 <label>To</label>
-                                <input type="date" class="form-control"  th:name="to">
+                                <input type="date" class="form-control" th:name="to">
                             </div>
                             <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('*')}"
                                  th:each="err : ${#fields.errors('*')}" th:text="${err}">
@@ -73,13 +73,16 @@
 
     <div class="container">
 
-        <table class="table table-dark" th:if="${meals.size() > 0}">
+        <p class="alert alert-danger"
+           th:if="${notFoundInRange} != null" th:text="${'Could not find any meal within provided time span.'}"></p>
+
+        <table class="table table-dark" th:if="${meals != null}">
             <thead>
             <tr>
                 <th scope="col">Id</th>
-                <th scope="col" >Name</th>
-                <th scope="col" >Date</th>
-                <th scope="col" >Energy</th>
+                <th scope="col">Name</th>
+                <th scope="col">Date</th>
+                <th scope="col">Energy</th>
                 <th scope="col">Nutrients</th>
                 <th scope="col"></th>
                 <th scope="col"></th>
@@ -87,10 +90,10 @@
             </thead>
             <tbody>
             <tr th:each="meal: ${meals}">
-                <td  th:text="${meal.getId()}"></td>
-                <td  th:text="${meal.getName()}"></td>
-                <td  th:text="${meal.getDate()}"></td>
-                <td  th:text="${meal.getTotalEnergy() + ' kcal'}"></td>
+                <td th:text="${meal.getId()}"></td>
+                <td th:text="${meal.getName()}"></td>
+                <td th:text="${meal.getDate()}"></td>
+                <td th:text="${meal.getTotalEnergy() + ' kcal'}"></td>
                 <td>
                     <p th:text="'Protein: ' + ${meal.getTotalProtein() + ' g'}"></p>
                     <p th:text="'Fat: ' + ${meal.getTotalFat() + ' g'}"></p>
