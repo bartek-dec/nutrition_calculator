@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Controller enables to manage meals.
@@ -125,8 +126,13 @@ public class MealController {
             return "editMeal";
         }
 
-        mealService.update(meal);
-        return "redirect:/meals";
+        Optional<Meal> mealOptional = mealService.update(meal);
+
+        if (mealOptional.isPresent()) {
+            return "redirect:/meals";
+        }
+
+        return "resourceNotExist";
     }
 
     /**
