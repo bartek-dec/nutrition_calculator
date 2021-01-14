@@ -26,7 +26,7 @@ public interface MealService {
 
     Optional<Meal> update(Meal meal);
 
-    void updateIngredient(UserRequest userRequest);
+    Optional<Ingredient> updateIngredient(UserRequest userRequest);
 
     List<Meal> findByDate(LocalDate from, LocalDate to);
 }

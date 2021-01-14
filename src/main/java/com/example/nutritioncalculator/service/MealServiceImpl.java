@@ -159,13 +159,20 @@ public class MealServiceImpl implements MealService {
      * @param userRequest Request object from Http protocol.
      */
     @Override
-    public void updateIngredient(UserRequest userRequest) {
-        Ingredient foundIngredient = ingredients.stream()
+    public Optional<Ingredient> updateIngredient(UserRequest userRequest) {
+        Optional<Ingredient> ingredientOptional = ingredients.stream()
                 .filter(element -> Objects.equals(element.getFoodId(), userRequest.getFoodId()))
                 .filter(element -> Objects.equals(element.getName(), userRequest.getProduct()))
-                .findFirst().get();
+                .findFirst();
 
-        ingredientUtil.updateIngredient(foundIngredient, userRequest);
+        if (ingredientOptional.isPresent()) {
+            Ingredient foundIngredient = ingredientOptional.get();
+            Ingredient updatedIngredient = ingredientUtil.updateIngredient(foundIngredient, userRequest);
+
+            return Optional.of(updatedIngredient);
+        }
+
+        return Optional.empty();
     }
 
     /**
