@@ -102,14 +102,14 @@ class MealServiceImplTest {
         meals.add(meal1);
         meals.add(meal2);
 
-        when(mealRepository.findAll()).thenReturn(meals);
+        when(mealRepository.findByOrderByDateAsc()).thenReturn(meals);
 
         //when
         List<Meal> foundMeals = mealService.findAll();
 
         //then
         assertEquals(2, foundMeals.size());
-        verify(mealRepository, times(1)).findAll();
+        verify(mealRepository, times(1)).findByOrderByDateAsc();
     }
 
     @Test

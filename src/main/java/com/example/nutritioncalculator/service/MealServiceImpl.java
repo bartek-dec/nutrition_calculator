@@ -89,7 +89,7 @@ public class MealServiceImpl implements MealService {
      */
     @Override
     public List<Meal> findAll() {
-        return mealRepository.findAll();
+        return mealRepository.findByOrderByDateAsc();
     }
 
     /**

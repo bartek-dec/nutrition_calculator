@@ -14,6 +14,5 @@ public interface MealRepository extends JpaRepository<Meal, Long> {
     @Query(value = "SELECT * FROM meals WHERE date >= :from AND date <= :to", nativeQuery = true)
     List<Meal> findAllInRange(LocalDate from, LocalDate to);
 
-    @Query(value = "SELECT * FROM meals ORDER BY date ASC", nativeQuery = true)
-    List<Meal> findAll();
+    List<Meal> findByOrderByDateAsc();
 }
