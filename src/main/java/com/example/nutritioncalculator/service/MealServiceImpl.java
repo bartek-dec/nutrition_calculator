@@ -185,7 +185,7 @@ public class MealServiceImpl implements MealService {
      */
     @Override
     public List<Meal> findByDate(LocalDate from, LocalDate to) {
-        return mealRepository.findAllInRange(from, to);
+        return mealRepository.findAllByDateBetweenOrderByDateAsc(from, to);
     }
 
     /**

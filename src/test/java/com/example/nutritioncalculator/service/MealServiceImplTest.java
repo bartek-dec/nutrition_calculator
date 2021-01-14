@@ -211,12 +211,13 @@ class MealServiceImplTest {
         List<Meal> meals = new ArrayList<>();
         meals.add(new Meal());
 
-        when(mealRepository.findAllInRange(any(LocalDate.class), any(LocalDate.class))).thenReturn(meals);
+        when(mealRepository.findAllByDateBetweenOrderByDateAsc(any(LocalDate.class), any(LocalDate.class))).thenReturn(meals);
 
         //when
         mealService.findByDate(from, to);
 
         //then
-        verify(mealRepository, times(1)).findAllInRange(any(LocalDate.class), any(LocalDate.class));
+        verify(mealRepository, times(1)).findAllByDateBetweenOrderByDateAsc(any(LocalDate.class),
+                any(LocalDate.class));
     }
 }
