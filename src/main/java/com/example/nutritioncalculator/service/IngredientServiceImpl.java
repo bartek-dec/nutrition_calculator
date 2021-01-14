@@ -7,6 +7,8 @@ import com.example.nutritioncalculator.util.IngredientUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 /**
  * IngredientServiceImpl communicates with persistence layer.
  *
@@ -54,10 +56,16 @@ public class IngredientServiceImpl implements IngredientService {
      * @param userRequest Request object from Http protocol.
      */
     @Override
-    public void update(UserRequest userRequest) {
-        Ingredient foundIngredient = ingredientRepository.findById(userRequest.getFoodDbId()).get();
+    public Optional<Ingredient> update(UserRequest userRequest) {
+        Optional<Ingredient> ingredientOptional = ingredientRepository.findById(userRequest.getFoodDbId());
 
-        foundIngredient = ingredientUtil.updateIngredient(foundIngredient, userRequest);
-        ingredientRepository.save(foundIngredient);
+        if (ingredientOptional.isPresent()) {
+            Ingredient foundIngredient = ingredientOptional.get();
+            foundIngredient = ingredientUtil.updateIngredient(foundIngredient, userRequest);
+            Ingredient updatedIngredient = ingredientRepository.save(foundIngredient);
+
+            return Optional.of(updatedIngredient);
+        }
+        return Optional.empty();
     }
 }
