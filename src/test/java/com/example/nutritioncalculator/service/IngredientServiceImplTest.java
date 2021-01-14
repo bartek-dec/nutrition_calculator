@@ -11,6 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -40,7 +41,7 @@ class IngredientServiceImplTest {
         ingredientService.deleteById(1L);
 
         //then
-        verify(ingredientRepository,times(1)).deleteById(anyLong());
+        verify(ingredientRepository, times(1)).deleteById(anyLong());
     }
 
     @Test
@@ -67,16 +68,21 @@ class IngredientServiceImplTest {
         Ingredient foundIngredient = new Ingredient();
         foundIngredient.setId(1L);
 
+        Ingredient updatedIngredient = new Ingredient();
+        updatedIngredient.setId(1L);
+
         UserRequest userRequest = new UserRequest();
         userRequest.setFoodDbId(1L);
 
         when(ingredientRepository.findById(anyLong())).thenReturn(Optional.of(foundIngredient));
         when(ingredientUtil.updateIngredient(any(Ingredient.class), any(UserRequest.class))).thenReturn(ingredient);
+        when(ingredientRepository.save(any(Ingredient.class))).thenReturn(updatedIngredient);
 
         //when
-        ingredientService.update(userRequest);
+        Optional<Ingredient> update = ingredientService.update(userRequest);
 
         //then
+        assertEquals(1L, update.get().getId());
         verify(ingredientRepository, times(1)).findById(anyLong());
         verify(ingredientRepository, times(1)).save(any(Ingredient.class));
     }

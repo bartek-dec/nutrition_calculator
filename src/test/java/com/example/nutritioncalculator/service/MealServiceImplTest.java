@@ -191,7 +191,7 @@ class MealServiceImplTest {
         when(mealRepository.save(any(Meal.class))).thenReturn(meal);
 
         //when
-        Meal updatedMeal = mealService.update(meal);
+        Meal updatedMeal = mealService.update(meal).get();
 
         //then
         assertNotNull(updatedMeal);
