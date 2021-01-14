@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -23,9 +24,21 @@ class DateParserTest {
         LocalDate expectedDate = LocalDate.of(2020, 1, 12);
 
         //when
-        LocalDate date = dateParser.convertDate(dateToParse);
+        LocalDate date = dateParser.convertDate(dateToParse).get();
 
         //then
         assertEquals(expectedDate, date);
+    }
+
+    @Test
+    void should_return_empty_Optional() {
+        //given
+        String dateToParse = "";
+
+        //when
+        Optional<LocalDate> dateOptional = dateParser.convertDate(dateToParse);
+
+        //then
+        assertEquals(Optional.empty(), dateOptional);
     }
 }
